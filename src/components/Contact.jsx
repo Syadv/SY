@@ -17,6 +17,8 @@ const Contact = () => {
 
   useEffect(() => {
     controls.start("show");
+    // Initialize EmailJS if not done elsewhere
+    emailjs.init("EBuMP0S8_hXfPe3l5");
   }, [controls]);
 
   const handleChange = (e) => {
