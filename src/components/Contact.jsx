@@ -17,7 +17,6 @@ const Contact = () => {
 
   useEffect(() => {
     controls.start("show");
-    // Initialize EmailJS if not done elsewhere
     emailjs.init("EBuMP0S8_hXfPe3l5");
   }, [controls]);
 
@@ -49,7 +48,7 @@ const Contact = () => {
       });
     }).catch((error) => {
       setLoading(false);
-      console.error("Failed to send message", error);
+      console.error("Failed to send message:", error);
       alert("Failed to send message. Please try again later.");
     });
   };
