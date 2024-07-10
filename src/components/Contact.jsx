@@ -29,14 +29,14 @@ const Contact = () => {
     setLoading(true);
 
     emailjs.send(
-      "YOUR_SERVICE_ID",
-      "YOUR_TEMPLATE_ID",
+      "service_5ycqd1c",
+      "template_ojxqgc1",
       {
         from_name: form.name,
         from_email: form.email,
         message: form.message,
       },
-      "YOUR_USER_ID"
+      "EBuMP0S8_hXfPe3l5"
     ).then(() => {
       setLoading(false);
       alert("Message sent successfully!");
