@@ -1,7 +1,6 @@
 import emailjs from "@emailjs/browser";
 import { motion, useAnimation } from "framer-motion";
 import React, { useEffect, useRef, useState } from "react";
-
 import { SectionWrapper } from "../hoc";
 import { styles } from "../styles";
 
@@ -20,10 +19,41 @@ const Contact = () => {
     controls.start("show");
   }, [controls]);
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setForm({ ...form, [name]: value });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    emailjs.send(
+      "YOUR_SERVICE_ID",
+      "YOUR_TEMPLATE_ID",
+      {
+        from_name: form.name,
+        from_email: form.email,
+        message: form.message,
+      },
+      "YOUR_USER_ID"
+    ).then(() => {
+      setLoading(false);
+      alert("Message sent successfully!");
+      setForm({
+        name: "",
+        email: "",
+        message: "",
+      });
+    }).catch((error) => {
+      setLoading(false);
+      console.error("Failed to send message", error);
+      alert("Failed to send message. Please try again later.");
+    });
+  };
+
   return (
-    <div
-      className="md:m-12 md:px-48 flex flex-col sm:flex-row gap-10 overflow-hidden"
-    >
+    <div className="md:m-12 md:px-48 flex flex-col sm:flex-row gap-10 overflow-hidden">
       <motion.div
         initial="hidden"
         animate={controls}
@@ -47,8 +77,8 @@ const Contact = () => {
         <h3 className={styles.sectionText}>Contact</h3>
 
         <form
-          action="https://getform.io/f/8b086558-47d4-49d0-852d-ec8c22da40f7"
-          method="POST"
+          ref={formRef}
+          onSubmit={handleSubmit}
           className="mt-12 gap-4 flex flex-col"
         >
           <span className='text-white font-medium mt-3'>Full Name</span>
@@ -57,13 +87,17 @@ const Contact = () => {
             name="name"
             placeholder="Enter your full name"
             className="bg-tertiary p-4 text-white border font-medium"
+            value={form.name}
+            onChange={handleChange}
           />
           <span className='text-white font-medium mt-3'>Email Address</span>
           <input
-            type="text"
+            type="email"
             name="email"
             placeholder="Enter your email address"
             className="bg-tertiary p-4 text-white border font-medium"
+            value={form.email}
+            onChange={handleChange}
           />
           <span className='text-white font-medium mt-3'>Message</span>
           <textarea
@@ -71,6 +105,8 @@ const Contact = () => {
             placeholder="Enter your message"
             rows="10"
             className="bg-tertiary p-4 text-white border font-medium"
+            value={form.message}
+            onChange={handleChange}
           />
           <button
             type='submit'
